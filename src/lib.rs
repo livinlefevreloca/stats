@@ -29,7 +29,7 @@ where
 
 impl<T> Matrix<T>
 where
-    T: Mul<T, Output = T> + AddAssign<T> + Copy 
+    T: Mul<T, Output = T> + AddAssign<T> + Copy + Default 
     {
 
     pub fn dot(&self, other: &Self) -> Self {
@@ -37,8 +37,8 @@ where
         for i in 0..self.data.len() {
             let mut tmp = Vec::new();
             for j in 0..other.data[0].len() {
-                let mut accum = self.data[i][0] * other.data[0][j];
-                for k in 1..other.data.len() {
+                let mut accum = T::default();
+                for k in 0..other.data.len() {
                     accum += self.data[i][k] * other.data[k][j];
                 }
                 tmp.push(accum);
@@ -58,10 +58,6 @@ where
             data.push(tmp);
         }
         Matrix { data }
-    }
-
-    pub find_determinate(&self) -> Self {
-        
     }
 }
 
